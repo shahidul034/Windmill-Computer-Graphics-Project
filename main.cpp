@@ -23,6 +23,17 @@
 #include <math.h>       /* cos */
 
 #define PI 3.14159265
+const GLfloat light_ambient[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
+const GLfloat light_diffuse[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
+const GLfloat light_specular[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+const GLfloat light_position[] = { 2.0f, 5.0f, 5.0f, 0.0f };
+
+const GLfloat mat_ambient[]    = { 0.7f, 0.0f, 0.0f, 1.0f };
+const GLfloat mat_diffuse[]    = { 0.8f, 0.3f, 0.1f, 1.0f };
+const GLfloat mat_specular[]   = { 0.0f, 1.0f, 0.0f, 1.0f };
+const GLfloat high_shininess[] = { 100.0f };
+
+int w,h;
 static int slices = 16;
 static int stacks = 16;
 double xx=0,yy=0,zz=0;
@@ -37,7 +48,7 @@ double rott_x,rott_y,rott_z;
 int flag=0;
 
 static GLdouble CameraRad = 10;
-static GLdouble camTheta = 0;
+static GLdouble CameraTheta = 0;
 
 static GLdouble camHeight = 0;
 
@@ -46,8 +57,8 @@ static GLdouble camRoll = 90;
 
 
 static GLdouble CameraCenterX = 0;
-static GLdouble camCenterY = 0;
-static GLdouble camCenterZ = 0;
+static GLdouble CameraCenterY = 0;
+static GLdouble CameraCenterZ = 0;
 void ownscal(double x,double y,double z)
 {
     GLfloat mat[]=
@@ -96,7 +107,7 @@ int elementArray[24] =    // Vertex number for the six faces.
 
 static void LookAtView()
 {
-    GLdouble AngleRad = camTheta * PI / 180.0;
+    GLdouble AngleRad = CameraTheta * PI / 180.0;
 
     GLdouble cosAngle = cos(AngleRad);
     GLdouble sinAngle = sin(AngleRad);
@@ -115,15 +126,17 @@ static void LookAtView()
     tX = cosAngle * upX + sinAngle * upZ;
     tZ = -sinAngle * upX + cosAngle * upZ;
     upX = tX, upZ = tZ;
-    gluLookAt(CameraX, CameraY, CameraZ, CameraCenterX, camCenterY, camCenterZ, upX, upY, upZ);
+    gluLookAt(CameraX, CameraY, CameraZ, CameraCenterX, CameraCenterY, CameraCenterZ, upX, upY, upZ);
 }
 
 
 static void resize(int width, int height)
 {
-    const float ar = (float) width / (float) height;
+    w=width;
+    h=height;
+    const float ar = (float) (width/2) / (float) height;
 
-    glViewport(0, 0, width, height);
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     double ar2=1.8;
@@ -281,10 +294,44 @@ static void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity() ;
     LookAtView();
-    //glScaled(1+zoom_x,1+zoom_y,1+zoom_z);
+    //glTranslated(translate_x,translate_y,translate_z);
+    //glScaled(zoom_x+1,zoom_y+1,zoom_z+1);
+    //glRotated(rot_x,1,0,0);
+    //glRotated(rot_y,0,1,0);
+    //glRotated(rot_z,0,0,1);
+
     glPushMatrix();
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+    glViewport(0,0,w/2,h);
     windmill();
+    glPushMatrix();
+    glTranslated(3,3,5);
+    glutSolidSphere(1,slices,stacks);
     glPopMatrix();
+    glPopMatrix();
+
+
+
+
+
+    glPushMatrix();
+    glViewport(w/2,0,w/2,h);
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+    glScaled(1,1,1);
+    windmill();
+    glPushMatrix();
+    glTranslated(3,3,5);
+    glScaled(4,1,2);
+    glutSolidSphere(1,slices,stacks);
+    glPopMatrix();
+    glPopMatrix();
+
 
 
 
@@ -331,7 +378,7 @@ static void key(unsigned char key, int x, int y)
     case 'y':
         if (flag==1)
         {
-            camTheta -= 5;///yaw
+            CameraTheta -= 5;///yaw
 
         }
         else
@@ -344,7 +391,7 @@ static void key(unsigned char key, int x, int y)
     case 'Y':
         if (flag==1)
         {
-            camTheta += 5;
+            CameraTheta += 5;
 
         }
         else
@@ -415,7 +462,7 @@ static void key(unsigned char key, int x, int y)
     case 'e':
         if (flag==1)
         {
-            camCenterY+=1;
+            CameraCenterY+=1;
 
         }
         else
@@ -429,7 +476,7 @@ static void key(unsigned char key, int x, int y)
 
         if (flag==1)
         {
-            camCenterY-=1;
+            CameraCenterY-=1;
 
         }
         else
@@ -444,7 +491,7 @@ static void key(unsigned char key, int x, int y)
     case 'w':
         if (flag==1)
         {
-            camCenterZ+=1;
+            CameraCenterZ+=1;
 
         }
         else
@@ -457,7 +504,7 @@ static void key(unsigned char key, int x, int y)
     case 'W':
         if (flag==1)
         {
-            camCenterZ-=1;
+            CameraCenterZ-=1;
 
         }
         else
@@ -649,6 +696,12 @@ int main(int argc, char *argv[])
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_NORMALIZE);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
+
+
 
 
 

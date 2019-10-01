@@ -236,3 +236,11 @@
 	<stddef.h>
 	<GL/gl.h>
 
+1569911743 source:c:\users\inception\desktop\new folder\windmill\main.cpp
+	<stdio.h>
+	<math.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<math.h>
+
