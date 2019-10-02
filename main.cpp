@@ -1,16 +1,3 @@
-/*
- * GLUT Shapes Demo
- *
- * Written by Nigel Stewart November 2003
- *
- * This program is test harness for the sphere, cone
- * and torus shapes in GLUT.
- *
- * Spinning wireframe and smooth shaded shapes are
- * displayed until the ESC or q key is pressed.  The
- * number of geometry stacks and slices can be adjusted
- * using the + and - keys.
- */
 #include<stdio.h>
 #include<math.h>
 #ifdef __APPLE__
@@ -23,15 +10,7 @@
 #include <math.h>       /* cos */
 
 #define PI 3.14159265
-const GLfloat light_ambient[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
-const GLfloat light_diffuse[]  = { 0.0f, 0.0f, 0.0f, 1.0f };
-const GLfloat light_specular[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-const GLfloat light_position[] = { 2.0f, 5.0f, 5.0f, 0.0f };
 
-const GLfloat mat_ambient[]    = { 0.7f, 0.0f, 0.0f, 1.0f };
-const GLfloat mat_diffuse[]    = { 0.8f, 0.3f, 0.1f, 1.0f };
-const GLfloat mat_specular[]   = { 0.0f, 1.0f, 0.0f, 1.0f };
-const GLfloat high_shininess[] = { 100.0f };
 
 int w,h;
 static int slices = 16;
@@ -46,16 +25,10 @@ double eye_z = 25;
 double cx=0,cy=0,cz=0;
 double rott_x,rott_y,rott_z;
 int flag=0;
-
 static GLdouble CameraRad = 10;
 static GLdouble CameraTheta = 0;
-
 static GLdouble camHeight = 0;
-
-
 static GLdouble camRoll = 90;
-
-
 static GLdouble CameraCenterX = 0;
 static GLdouble CameraCenterY = 0;
 static GLdouble CameraCenterZ = 0;
@@ -86,14 +59,11 @@ float vertexCoords[24] =    // Coordinates for the vertices of a cube.
     0,1,0,
     1,1,0
 };
-
-
 float vertexColors[24] =    // An RGB color value for each vertex
 {
     0.098, 0.054, 0.403,   0.098, 0.054, 0.403,   0.098, 0.054, 0.403,   0.098, 0.054, 0.403,
     0.098, 0.054, 0.403,   0.098, 0.054, 0.403,   0.098, 0.054, 0.403,   0.098, 0.054, 0.403
 };
-
 int elementArray[24] =    // Vertex number for the six faces.
 {
     2,3,4,1,
@@ -103,8 +73,6 @@ int elementArray[24] =    // Vertex number for the six faces.
     3,6,7,4,
     5,0,2,1
 };
-
-
 static void LookAtView()
 {
     GLdouble AngleRad = CameraTheta * PI / 180.0;
@@ -128,8 +96,6 @@ static void LookAtView()
     upX = tX, upZ = tZ;
     gluLookAt(CameraX, CameraY, CameraZ, CameraCenterX, CameraCenterY, CameraCenterZ, upX, upY, upZ);
 }
-
-
 static void resize(int width, int height)
 {
     w=width;
@@ -145,31 +111,30 @@ static void resize(int width, int height)
     glLoadIdentity() ;
     gluLookAt(0, 0, 25, 0, 0, 0, 0, 1, 0);
 }
-
 void draw_cube()
 {
 
     glEnableClientState( GL_VERTEX_ARRAY );
-    glEnableClientState( GL_COLOR_ARRAY );
+    //glEnableClientState( GL_COLOR_ARRAY );
     glVertexPointer( 3, GL_FLOAT, 0, vertexCoords );
-    glColorPointer( 3, GL_FLOAT, 0, vertexColors );
+    //glColorPointer( 3, GL_FLOAT, 0, vertexColors );
     glEnable(GL_POLYGON_OFFSET_FILL);
     glDrawElements( GL_QUADS, 24, GL_UNSIGNED_INT, elementArray );
     glDisable(GL_POLYGON_OFFSET_FILL);
-    glDisableClientState( GL_COLOR_ARRAY );
+    //glDisableClientState( GL_COLOR_ARRAY );
     glDisableClientState(GL_VERTEX_ARRAY);
 
 }
 static void cube()
 {
     glEnableClientState( GL_VERTEX_ARRAY );
-    glEnableClientState( GL_COLOR_ARRAY );
+    //glEnableClientState( GL_COLOR_ARRAY );
     glVertexPointer( 3, GL_FLOAT, 0, vertexCoords );
-    glColorPointer( 3, GL_FLOAT, 0, vertexColors );
+    //glColorPointer( 3, GL_FLOAT, 0, vertexColors );
     glEnable(GL_POLYGON_OFFSET_FILL);
     glDrawElements( GL_QUADS, 24, GL_UNSIGNED_INT, elementArray );
     glDisable(GL_POLYGON_OFFSET_FILL);
-    glDisableClientState( GL_COLOR_ARRAY );
+    //glDisableClientState( GL_COLOR_ARRAY );
     glDisableClientState(GL_VERTEX_ARRAY);
 }
 static void blade(GLdouble scaley, GLdouble rot_angle, GLdouble rot_x, GLdouble rot_y, GLdouble rot_z)
@@ -189,11 +154,10 @@ static void fan()
     blade(-3, 120+t*250, 0, 1, 0);
     blade(-3, 240+t*250, 0, 1, 0);
 }
-
 void cube(double translate_x,double translate_y,double translate_z,double rotate_x,double rotate_y,double rotate_z,double scale_x,double scale_y,double scale_z)
 {
     glPushMatrix();
-    glColor3d(0.325, 0.176, 0.823);
+    //glColor3d(0.325, 0.176, 0.823);
     glTranslated(translate_x,translate_y,translate_z);
     glRotated(rotate_x,1,0,0);
     glRotated(rotate_y,0,1,0);
@@ -203,9 +167,18 @@ void cube(double translate_x,double translate_y,double translate_z,double rotate
     glPopMatrix();
 
 }
-
 void circle()
 {
+//    const GLfloat mat_ambient[]    = { .6, 0.0f, 0.0f, 1.0f };
+//    const GLfloat mat_diffuse[]    = { 1.0f, 0.0f, 0.0f, 1.0f };
+//    const GLfloat mat_specular[]   = { 1.0f, 0.0f, 0.0f, 1.0f };
+//    const GLfloat high_shininess[] = { 100.0f };
+//
+//    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
+//    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
+//    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
+//    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+
     float theta=(22.0/7.0)/180.0;
     glTranslated(-.70,0,8);
 
@@ -239,6 +212,16 @@ void circle()
 }
 void rod()
 {
+    const GLfloat mat_ambient[]    = { 0.0f, 0.0f, 0.5f, 1.0f };
+    const GLfloat mat_diffuse[]    = { 0.078f, 0.062f, 0.717f, 1.0f };
+    const GLfloat mat_specular[]   = { 0.0f, 0.0f, 1.0f, 1.0f };
+    const GLfloat high_shininess[] = { 100.0f };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+
     cube(-.50,-3.80,4.40,0,0,0,1.30,.40,.40);
     cube(-.50,3.40,4.40,0,0,0,1.30,.40,.40);
     cube(.60,-4.40,4.40,0,0,0,.30, 9.10,0.40);
@@ -257,33 +240,76 @@ void rod()
 void windmill()
 {
 
+    {
+        ///Rod
+        glPushMatrix();
+        const GLfloat mat_ambient[]    = { 0.0f, 0.0f, 0.5f, 1.0f };
+        const GLfloat mat_diffuse[]    = { 0.078f, 0.062f, 0.717f, 1.0f };
+        const GLfloat mat_specular[]   = { 0.0f, 0.0f, 1.0f, 1.0f };
+        const GLfloat high_shininess[] = { 100.0f };
+
+        glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
+        glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
+        glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+        cube(0,0,0,-5,0,-5,.50,13.80,.5);
+
+        cube(0,0,-2.90,5,0,-5,.50,13.80,.5);
+
+        cube(2.70,0,0,-5,0,5,.50,13.80,.5);
+
+        cube(2.70,0,-2.90,5,0,5,.50,13.80,.5);
+
+        glPopMatrix();
+
+    }
+
+    {
+        ///chakti
 
 
-    cube(0,0,0,-5,0,-5,.50,13.80,.5);
+        const GLfloat mat_ambient3[]    = { .5, 0.0f, 0.0f, 1.0f };
+        const GLfloat mat_diffuse3[]    = { .8, 0.0f, 0.0f, 1.0f };
+        const GLfloat mat_specular3[]   = { .5, 0.0f, 0.0f, 1.0f };
+        const GLfloat high_shininess3[] = { 100.0f };
 
-    cube(0,0,-2.90,5,0,-5,.50,13.80,.5);
+        glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient3);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse3);
+        glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular3);
+        glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess3);
 
-    cube(2.70,0,0,-5,0,5,.50,13.80,.5);
+        glTranslated(2.70,13.50,1.20);
 
-    cube(2.70,0,-2.90,5,0,5,.50,13.80,.5);
+        glScaled(1.8,2.50,-.30);
 
-    //cube(1.35,0,-1.45,0,0,0,.50,13.80,.5);
+        circle();
 
-    glTranslated(2.70,13.50,1.20);
-    glColor3d(1,.3,.3);
-    glScaled(1.8,2.50,-.30);
-    circle();
+    }
+
     glPushMatrix();
     glTranslated(0,-4.10,.30);
     fan();
     glPopMatrix();
 
-    glPushMatrix();
-    glColor3d(0,0,0);
-    glTranslated(.30,-.80,-1.30);
-    glScaled(.30,4.1,.20);
-    circle();
-    glPopMatrix();
+
+    {
+        glPushMatrix();
+        glTranslated(.30,-.80,-1.30);
+        glScaled(.30,4.1,.20);
+        const GLfloat mat_ambient2[]    = { 0.0f, 0.0f, 0.0f, 1.0f };
+        const GLfloat mat_diffuse2[]    = { 0.0f, 0.0f, 0.0f, 1.0f };
+        const GLfloat mat_specular2[]   = { 0.0f, 0.0f, 0.0f, 1.0f };
+        const GLfloat high_shininess2[] = { 100.0f };
+
+        glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient2);
+        glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse2);
+        glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular2);
+        glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess2);
+        circle();
+        glPopMatrix();
+    }
+
+
     rod();
 
 }
@@ -294,46 +320,13 @@ static void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity() ;
     LookAtView();
-    //glTranslated(translate_x,translate_y,translate_z);
-    //glScaled(zoom_x+1,zoom_y+1,zoom_z+1);
-    //glRotated(rot_x,1,0,0);
-    //glRotated(rot_y,0,1,0);
-    //glRotated(rot_z,0,0,1);
+
+    glTranslated(0, -6.60,0);
+    glScaled(-0.10+1,-0.20+1,-0.30+1);
 
     glPushMatrix();
-    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
-    glViewport(0,0,w/2,h);
     windmill();
-    glPushMatrix();
-    glTranslated(3,3,5);
-    glutSolidSphere(1,slices,stacks);
     glPopMatrix();
-    glPopMatrix();
-
-
-
-
-
-    glPushMatrix();
-    glViewport(w/2,0,w/2,h);
-    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
-    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
-    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
-    glScaled(1,1,1);
-    windmill();
-    glPushMatrix();
-    glTranslated(3,3,5);
-    glScaled(4,1,2);
-    glutSolidSphere(1,slices,stacks);
-    glPopMatrix();
-    glPopMatrix();
-
-
-
 
     glutSwapBuffers();
 }
@@ -636,7 +629,7 @@ static void key(unsigned char key, int x, int y)
         break;
 
 
-    case 27 :
+
     case 'q':
         printf("\nzoom_x: %.2f zoom_y: %.2f zoom_z: %.2f",zoom_x,zoom_y,zoom_z);
         printf("\ntranslate_x: %.2f translate_y: %.2f translate_z: %.2f",translate_x,translate_y,translate_z);
@@ -671,6 +664,26 @@ static void idle(void)
 {
     glutPostRedisplay();
 }
+void light()
+{
+
+    GLfloat no_light[] = { 0.0, 0.0, 0.0, 1.0 };
+    GLfloat light_ambient[]  = {1.0, 1.0, 1.0, 1.0};
+    GLfloat light_diffuse[]  = { 1.0, 1.0, 1.0, 1 };
+    GLfloat light_specular[] = { 1, 1, 1, 1 };
+    GLfloat light_position[] = { 0.0, 200.0, 0.0, 1.0 };
+
+    glEnable( GL_LIGHT0);
+    glLightfv( GL_LIGHT0, GL_AMBIENT, light_ambient);
+    glLightfv( GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    glLightfv( GL_LIGHT0, GL_SPECULAR, light_specular);
+    glLightfv( GL_LIGHT0, GL_POSITION, light_position);
+    GLfloat spot_direction[] = { 0.0, -1.0, 0.0 };
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
+    glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 25.0);
+//		glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 5.0);
+//        glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 2.0);
+}
 
 
 
@@ -683,27 +696,23 @@ int main(int argc, char *argv[])
 
     glutCreateWindow("GLUT Shapes");
 
+    glShadeModel( GL_SMOOTH );
+    glEnable( GL_DEPTH_TEST );
+    glEnable(GL_NORMALIZE);
+    glEnable(GL_LIGHTING);
+    light();
+
+
     glutReshapeFunc(resize);
     glutDisplayFunc(display);
     printf("Enter 1 for camera and 0 for object mode\n");
     scanf("%d",&flag);
+    //flag=1;
+
     glutKeyboardFunc(key);
     glutIdleFunc(idle);
 
     glClearColor(1,1,1,1);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_NORMALIZE);
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_LIGHTING);
-
-
-
-
 
     glutMainLoop();
 
