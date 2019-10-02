@@ -235,6 +235,97 @@ void rod()
 
 
 }
+void wall()
+{
+    //glRotated(xx*20,1,0,0);
+    //glRotated(yy*20,0,1,0);
+    //glRotated(zz*20,0,0,1);
+    glPushMatrix();
+    const GLfloat mat_ambient[]    = { 0.0f, 0.0f, 0.5f, 1.0f };
+    const GLfloat mat_diffuse[]    = { 0.078f, 0.062f, 0.717f, 1.0f };
+    const GLfloat mat_specular[]   = { 0.0f, 0.0f, 1.0f, 1.0f };
+    const GLfloat high_shininess[] = { 100.0f };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+
+    cube(0,0,0,0,-1*50,0,.4,+6.10,4.80);
+
+    const GLfloat mat_ambient2[]    = { 1.0f, 0.0f, 0.0f, 1.0f };
+    const GLfloat mat_diffuse2[]    = { 1.0f, 0.0f, 0.0f, 1.0f };
+    const GLfloat mat_specular2[]   = { 1.0f, 0.0f, 0.0f, 1.0f };
+    const GLfloat high_shininess2[] = { 100.0f };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient2);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse2);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular2);
+    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess2);
+
+    cube(0,0,0,0*20,2*20,0*20,.4,+6.10,4.80);
+
+    const GLfloat mat_ambient3[]    = { 1.0f, 1.0f, 0.0f, 1.0f };
+    const GLfloat mat_diffuse3[]    = { 1.0f, 1.0f, 0.0f, 1.0f };
+    const GLfloat mat_specular3[]   = { 1.0f, 1.0f, 0.0f, 1.0f };
+    const GLfloat high_shininess3[] = { 100.0f };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient3);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse3);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular3);
+    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess3);
+    cube(0,0,0,0*20,-2.50*20,-4.50*20,.4+.1,6.10-1.30,4.80);
+    glPopMatrix();
+
+
+
+
+
+
+
+
+
+}
+
+void table()
+{
+
+    glPushMatrix();
+    const GLfloat mat_ambient[]    = { 0.545, 0.349, 0.054, 1.0f };
+    const GLfloat mat_diffuse[]    = { 0.545, 0.349, 0.054, 1.0f };
+    const GLfloat mat_specular[]   = { 0.545, 0.349, 0.054, 1.0f };
+    const GLfloat high_shininess[] = { 100.0f };
+
+    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
+    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
+
+    cube(0,0,0,0,0,0,.4-0.30,+6.10-3.50,4.80-4.70);
+
+    cube(0,0,1.40,0,0,0,.4-0.30,+6.10-3.50,4.80-4.70);
+
+    cube(1.40,0,0,0,0,0,.4-0.30,+6.10-3.50,4.80-4.70);
+
+    cube(1.40,0,1.40,0,0,0,.4-0.30,+6.10-3.50,4.80-4.70);
+
+
+    cube(-.90,2.40,-.10,0,0,0,  2.10+1, -.80+1 ,.70+1  );
+
+
+
+    glPopMatrix();
+
+
+
+
+
+
+
+
+
+}
+
 
 
 void windmill()
@@ -321,10 +412,23 @@ static void display(void)
     glLoadIdentity() ;
     LookAtView();
 
-    glTranslated(0, -6.60,0);
-    glScaled(-0.10+1,-0.20+1,-0.30+1);
+    glPushMatrix();
+    glRotated(.80*20,1,0,0);
+    glTranslated(-.70,-1.20,0);
+    glPushMatrix();
+    glTranslated(-.60,-.20,3.20);
+    table();
+    glPopMatrix();
+    glPushMatrix();
+    wall();
+    glPopMatrix();
+
+    glPopMatrix();
+
 
     glPushMatrix();
+     glTranslated(0, 0,4);
+    glScaled(-.90+1,-.90+1,-.90+1);
     windmill();
     glPopMatrix();
 
@@ -336,7 +440,7 @@ static void key(unsigned char key, int x, int y)
 {
     double translate=.1;
     double rotation=1;
-    double scale2=.1,lookat=0.5;
+    double scale2=.1,lookat=0.1;
     double changef=.1;
 
     switch (key)
@@ -634,13 +738,15 @@ static void key(unsigned char key, int x, int y)
         printf("\nzoom_x: %.2f zoom_y: %.2f zoom_z: %.2f",zoom_x,zoom_y,zoom_z);
         printf("\ntranslate_x: %.2f translate_y: %.2f translate_z: %.2f",translate_x,translate_y,translate_z);
         printf("\nrotate_x: %.2f rotate_y: %.2f rotate_z: %.2f",rot_x,rot_y,rot_z);
+        printf("\ncx: %.2f cy: %.2f cz: %.2f\n",cx,cy,cz);
+
         if (xx!=0.0)
             printf("\nxx: %.2f\n",xx);
         if (yy!=0.0)
             printf("yy: %.2f\n",yy);
         if (zz!=0.0)
             printf("zz: %.2f\n",zz);
-        exit(0);
+
         break;
 
     case '+':
