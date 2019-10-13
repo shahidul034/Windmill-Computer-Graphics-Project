@@ -198,7 +198,7 @@ void circle()
     for(int i=1; i>=-1; i-=2)
     {
         glBegin(GL_TRIANGLE_FAN);
-        //glColor3d(1,0,0);
+
         glVertex3f(0,i,0);
         for(k=0; k<360; k++)
         {
