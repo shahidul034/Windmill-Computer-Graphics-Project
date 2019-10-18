@@ -190,8 +190,6 @@ void circle()
         glVertex3f(cos(theta*i),+1,sin(theta*i));
         //glColor3d(1,0,0);
         glVertex3f(cos(theta*i),-1,sin(theta*i));
-
-
     }
     glEnd();
     float k=0;
@@ -404,14 +402,101 @@ void windmill()
     rod();
 
 }
+void jack(){
+    //First leg of jack
+glPushMatrix();
+    glPushMatrix();
+        glTranslated(3,10,13.0);
+        glScalef(.6,1.4,3.1);
+        glutSolidSphere (1.0, 20, 16);
+    glPopMatrix();
 
+    glPushMatrix();
+        glTranslated(3,-4.5,-6.5);
+        glScalef(.6,1.4,3.1);
+        glutSolidSphere (1.0, 20, 16);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslated(3,2.9,3.5);
+        glRotated(55,1,0,0);
+        glScalef(.5,11.5,3.0);
+        glutSolidSphere (1.0, 20, 16);
+    glPopMatrix();
+
+//Second leg of jack
+
+    glPushMatrix();
+        glTranslated(1.2,10,-1.5);
+        glScalef(.6,1.4,3.1);
+        glutSolidSphere (1.0, 20, 16);
+    glPopMatrix();
+
+    glPushMatrix();
+
+        //glColor3f(1,1,0);
+        glTranslated(4.8,-4.5,8.5);
+        glScalef(.6,1.4,3.1);
+        glutSolidSphere (1.0, 20, 16);
+
+    glPopMatrix();
+
+    glPushMatrix();
+
+        glTranslated(2.9,3.1,3.5);
+        glRotated(14,0,0,1);
+        glRotated(-40,1,0,0);
+        glScalef(.7,8.6,3.1);
+        glutSolidSphere (1.0, 20, 16);
+
+    glPopMatrix();
+
+//Third leg of jack
+
+    glPushMatrix();
+
+
+        glTranslated(4.8,10,-1.5);
+        glScalef(.6,1.4,3.1);
+        glutSolidSphere (1.0, 20, 16);
+
+    glPopMatrix();
+
+    glPushMatrix();
+
+
+        glTranslated(1.2,-4.5,8.5);
+        glScalef(.6,1.4,3.1);
+        glutSolidSphere (1.0, 20, 16);
+
+    glPopMatrix();
+
+    glPushMatrix();
+
+        glTranslated(3.0,2.9,3.5);
+        glRotated(-14,0,0,1);
+        glRotated(-40,1,0,0);
+        glScalef(.7,8.6,3.1);
+        glutSolidSphere (1.0, 20, 16);
+
+    glPopMatrix();
+glPopMatrix();
+
+
+}
+
+void rotated(int am,int bm,int cm){
+    glRotated(am,1,0,0);
+    glRotated(bm,0,1,0);
+    glRotated(cm,0,0,1);
+}
 static void display(void)
 {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity() ;
     LookAtView();
-
+    rotated(-15,0,0);
     glPushMatrix();
     glRotated(.80*20,1,0,0);
     glTranslated(-.70,-1.20,0);
@@ -425,11 +510,19 @@ static void display(void)
 
     glPopMatrix();
 
-
     glPushMatrix();
-     glTranslated(0, 0,4);
+    rotated(10,10,0);
+    glTranslated(0-.50, 0+.80,4+.30);
     glScaled(-.90+1,-.90+1,-.90+1);
     windmill();
+    glPopMatrix();
+
+    glPushMatrix();
+    rotated(3+6,-3+0,3+0);
+    glScaled(.10,.10,.10-.05);
+    glTranslated(-12.50+0,8+6,79+0);
+    jack();
+
     glPopMatrix();
 
     glutSwapBuffers();
@@ -440,8 +533,8 @@ static void key(unsigned char key, int x, int y)
 {
     double translate=.1;
     double rotation=1;
-    double scale2=.1,lookat=0.1;
-    double changef=.1;
+    double scale2=.1,lookat=.1;
+    double changef=1;
 
     switch (key)
     {
