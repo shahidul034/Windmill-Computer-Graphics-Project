@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<math.h>
-#include "file1.h"
+
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -553,6 +553,10 @@ static void key(unsigned char key, int x, int y)
         glEnable( GL_LIGHT0);
         glDisable( GL_LIGHT1);
         break;
+    case 'o':
+        glDisable( GL_LIGHT0);
+        glDisable( GL_LIGHT1);
+        break;
     case 't':
         if (flag==1)
         {
@@ -894,17 +898,18 @@ void light()
     glLightfv( GL_LIGHT0, GL_POSITION, light_position);
     GLfloat spot_direction[] = { 0.0, -1.0, 0.0 };
     glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
-    glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 45.0);
+    glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 2.0);
 
 
-    glEnable( GL_LIGHT1);
+    //glEnable( GL_LIGHT1);
+    GLfloat light_position2[] = { 0.0, 200.0, 0.0, 0.0 };
     glLightfv( GL_LIGHT1, GL_AMBIENT, light_ambient);
     glLightfv( GL_LIGHT1, GL_DIFFUSE, light_diffuse);
     glLightfv( GL_LIGHT1, GL_SPECULAR, light_specular);
-    glLightfv( GL_LIGHT1, GL_POSITION, light_position);
-    GLfloat spot_direction2[] = { 0.0, 0.0, 1.0 };
+    glLightfv( GL_LIGHT1, GL_POSITION, light_position2);
+    GLfloat spot_direction2[] = { 0.0, -1.0, 0 };
     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction2);
-    glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
+    glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 2.0);
 
 }
 
