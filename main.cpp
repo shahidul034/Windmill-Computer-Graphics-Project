@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<math.h>
+#include "file1.h"
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -96,21 +97,8 @@ static void LookAtView()
     upX = tX, upZ = tZ;
     gluLookAt(CameraX, CameraY, CameraZ, CameraCenterX, CameraCenterY, CameraCenterZ, upX, upY, upZ);
 }
-static void resize(int width, int height)
-{
-    w=width;
-    h=height;
-    const float ar = (float) (width/2) / (float) height;
 
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    double ar2=1.8;
-    glFrustum(-ar2, ar2, -ar2, ar2, 2.0, 100.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity() ;
-    gluLookAt(0, 0, 25, 0, 0, 0, 0, 1, 0);
-}
 void draw_cube()
 {
 
@@ -137,6 +125,23 @@ static void cube()
     //glDisableClientState( GL_COLOR_ARRAY );
     glDisableClientState(GL_VERTEX_ARRAY);
 }
+
+static void resize(int width, int height)
+{
+    w=width;
+    h=height;
+    const float ar = (float) (width/2) / (float) height;
+
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    double ar2=1.8;
+    glFrustum(-ar2, ar2, -ar2, ar2, 2.0, 100.0);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity() ;
+    gluLookAt(0, 0, 25, 0, 0, 0, 0, 1, 0);
+}
+
 static void blade(GLdouble scaley, GLdouble rot_angle, GLdouble rot_x, GLdouble rot_y, GLdouble rot_z)
 {
     glPushMatrix();
@@ -538,6 +543,16 @@ static void key(unsigned char key, int x, int y)
 
     switch (key)
     {
+
+    case 'p':
+        glDisable( GL_LIGHT0);
+        glEnable( GL_LIGHT1);
+
+        break;
+    case 'P':
+        glEnable( GL_LIGHT0);
+        glDisable( GL_LIGHT1);
+        break;
     case 't':
         if (flag==1)
         {
@@ -879,9 +894,18 @@ void light()
     glLightfv( GL_LIGHT0, GL_POSITION, light_position);
     GLfloat spot_direction[] = { 0.0, -1.0, 0.0 };
     glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
-    glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 25.0);
-//		glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 5.0);
-//        glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 2.0);
+    glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 45.0);
+
+
+    glEnable( GL_LIGHT1);
+    glLightfv( GL_LIGHT1, GL_AMBIENT, light_ambient);
+    glLightfv( GL_LIGHT1, GL_DIFFUSE, light_diffuse);
+    glLightfv( GL_LIGHT1, GL_SPECULAR, light_specular);
+    glLightfv( GL_LIGHT1, GL_POSITION, light_position);
+    GLfloat spot_direction2[] = { 0.0, 0.0, 1.0 };
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction2);
+    glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 45.0);
+
 }
 
 
