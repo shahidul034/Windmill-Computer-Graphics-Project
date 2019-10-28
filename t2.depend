@@ -236,14 +236,24 @@
 	<stddef.h>
 	<GL/gl.h>
 
-1571654017 source:c:\users\inception\desktop\new folder\windmill\main.cpp
+1571757368 source:c:\users\inception\desktop\new folder\windmill\main.cpp
 	<stdio.h>
 	<math.h>
-	"file1.h"
 	<GLUT/glut.h>
 	<GL/glut.h>
 	<stdlib.h>
 	<math.h>
+	"RGBpixmap.cpp"
 
 1571648458 c:\users\inception\desktop\new folder\windmill\file1.h
+
+1571757526 c:\users\inception\desktop\new folder\windmill\rgbpixmap.cpp
+	<fstream>
+	<iostream>
+	<GL/glut.h>
+
+1571757526 source:c:\users\inception\desktop\new folder\windmill\rgbpixmap.cpp
+	<fstream>
+	<iostream>
+	<GL/glut.h>
 

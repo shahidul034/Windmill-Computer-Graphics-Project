@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<math.h>
-
+#include <windows.h>
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #else
@@ -174,17 +174,7 @@ void cube(double translate_x,double translate_y,double translate_z,double rotate
 }
 void circle()
 {
-//    const GLfloat mat_ambient[]    = { .6, 0.0f, 0.0f, 1.0f };
-//    const GLfloat mat_diffuse[]    = { 1.0f, 0.0f, 0.0f, 1.0f };
-//    const GLfloat mat_specular[]   = { 1.0f, 0.0f, 0.0f, 1.0f };
-//    const GLfloat high_shininess[] = { 100.0f };
-//
-//    glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
-//    glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
-//    glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
-//    glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
-
-    float theta=(22.0/7.0)/180.0;
+   float theta=(22.0/7.0)/180.0;
     glTranslated(-.70,0,8);
 
     glRotated(90,1,0,0);

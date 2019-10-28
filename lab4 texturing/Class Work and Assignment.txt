@@ -1,0 +1,35 @@
+Class Work:
+1. Define two viewport on your screen. Draw cube with opengl function 
+in both viewport. Draw two type of texture on it.
+Draw other pattern instead of GL_REPEAT. Show the difference with viewport.
+
+
+Assignment:
+Apply texture mapping on your project. Apply brick texture on your wall.
+Apply wood texture on your table. Create a image on the wall. 
+Apply zooming effect changing the aperture of the window. 
+Next week full project submission.
+ 
+Model Transform:
+Zoom
+Panning (Translation)
+Rotation
+
+Body Part Movement:
+1. Car- rotate wheels
+2. Windmill - rotate blades
+3. Lego Man - move hands
+4. Helicopter - rotate blades
+
+Viewing:
+Zoom (Going Towards Object)
+Roll
+Pitch
+Yaw
+Circular Motion
+
+Lighting Texture
+
+Two viewport:
+1. Without texture
+2. With texture
