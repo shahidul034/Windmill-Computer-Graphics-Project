@@ -235,6 +235,21 @@ void rod()
 void wall()
 {
 
+
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D,6);
+	glEnable(GL_TEXTURE_2D);
+    cube(.80+1,3.10+0,2+0,0*20,2*20,0*20,.4-.60,+6.10-4.20,4.80-3.60);
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
+
+    glPushMatrix();
+    glBindTexture(GL_TEXTURE_2D,10);
+	glEnable(GL_TEXTURE_2D);
+    cube(-2.40,2.20,-3.20,0,-1*50,0,.4,6.10,4.80);
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();
+
     glBindTexture(GL_TEXTURE_2D,9);
 	glEnable(GL_TEXTURE_2D);
 
@@ -249,7 +264,15 @@ void wall()
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 
-    cube(0,0,0,0,-1*50,0,.4,+6.10,4.80);
+
+
+
+
+    cube(0,0,0,0,-1*50,0,.4,6.10-3.50,4.80);
+    cube(0,0,0,0,-1*50,0,.4,6.10,4.80-3.00);
+    cube(0,5,0,0,-1*50,0,.4,6.10-5,4.80+0);
+    cube(0-2.20,0+0,0+1.80,0,-1*50,0,.4,6.10,4.80-2.80);
+
 
     const GLfloat mat_ambient2[]    = { 1.0f, 0.0f, 0.0f, 1.0f };
     const GLfloat mat_diffuse2[]    = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -262,6 +285,7 @@ void wall()
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess2);
 
     cube(0,0,0,0*20,2*20,0*20,.4,+6.10,4.80);
+
 
     const GLfloat mat_ambient3[]    = { 1.0f, 1.0f, 0.0f, 1.0f };
     const GLfloat mat_diffuse3[]    = { 1.0f, 1.0f, 0.0f, 1.0f };
@@ -534,7 +558,7 @@ static void display(void)
     glPopMatrix();
 
     glPushMatrix();
-    cube(cx,cy,cz,0,0,0,xx+1,yy+1,zz+1);
+    //cube(-3,3,4.20,0,0,0,-1.50+1,0+1,zz+1); //my test
     glPopMatrix();
 
 
@@ -547,7 +571,7 @@ static void key(unsigned char key, int x, int y)
     double translate=.1;
     double rotation=1;
     double scale2=.1,lookat=.1;
-    double changef=.5;
+    double changef=.2;
 
     switch (key)
     {
@@ -908,7 +932,7 @@ void light()
     glLightf( GL_LIGHT0, GL_SPOT_CUTOFF, 25.0);
 
 
-    //glEnable( GL_LIGHT1);
+    glEnable( GL_LIGHT1);
     GLfloat light_position2[] = { 0.0, 200.0, 0.0, 0.0 };
     glLightfv( GL_LIGHT1, GL_AMBIENT, light_ambient);
     glLightfv( GL_LIGHT1, GL_DIFFUSE, light_diffuse);
@@ -916,7 +940,7 @@ void light()
     glLightfv( GL_LIGHT1, GL_POSITION, light_position2);
     GLfloat spot_direction2[] = { 0.0, -1.0, 0 };
     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction2);
-    glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 2.0);
+    glLightf( GL_LIGHT1, GL_SPOT_CUTOFF, 40.0);
 
 
 }
@@ -951,6 +975,9 @@ void Init()
 
 	pix[8].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\image\\img5.bmp");
 	pix[8].setTexture(9);
+
+	pix[9].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\image\\Polaris.bmp");
+	pix[9].setTexture(10);
 
 
 }
