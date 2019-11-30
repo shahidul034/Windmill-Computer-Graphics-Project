@@ -12,7 +12,7 @@
 #include "RGBpixmap.cpp"
 #define PI 3.14159265
 
-RGBpixmap pix[10];
+RGBpixmap pix[20];
 int w,h;
 static int slices = 16;
 static int stacks = 16;
@@ -25,7 +25,7 @@ double eye_y = 0;
 double eye_z = 25;
 double cx=0,cy=0,cz=0;
 double rott_x,rott_y,rott_z;
-int flag=0;
+int flag=1;/// It helps camera mode or view mode
 static GLdouble CameraRad = 10;
 static GLdouble CameraTheta = 0;
 static GLdouble camHeight = 0;
@@ -33,6 +33,35 @@ static GLdouble camRoll = 90;
 static GLdouble CameraCenterX = 0;
 static GLdouble CameraCenterY = 0;
 static GLdouble CameraCenterZ = 0;
+void rotated(int am,int bm,int cm){
+    glRotated(am,1,0,0);
+    glRotated(bm,0,1,0);
+    glRotated(cm,0,0,1);
+}
+
+static void init_texturing_parameters()
+{
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+}
+
+static void textured_surface(GLfloat scaleX, GLfloat scaleY, GLfloat nRepeatX, GLfloat nRepeatY)
+{
+  glEnable(GL_TEXTURE_2D);
+  glBegin(GL_QUADS);
+    glNormal3f(0, 0, 1);
+    glTexCoord2f(0, nRepeatY); glVertex3f(-scaleX / 2, scaleY / 2, 0);
+    glTexCoord2f(0, 0); glVertex3f(-scaleX / 2, -scaleY / 2, 0);
+    glTexCoord2f(nRepeatX, 0); glVertex3f(scaleX / 2, -scaleY / 2, 0);
+    glTexCoord2f(nRepeatX, nRepeatY); glVertex3f(scaleX / 2, scaleY / 2, 0);
+  glEnd();
+  glDisable(GL_TEXTURE_2D);
+}
+
 void ownscal(double x,double y,double z)
 {
     GLfloat mat[]=
@@ -232,29 +261,40 @@ void rod()
 
     glDisable(GL_TEXTURE_2D);
 }
+void wall_photo(){
+    glPushMatrix();/// Scene picture
+
+    cube(1.80,3.10,2,0,40,0,-.20,1.9,1.20);
+
+    glPopMatrix();
+}
+void outside_scene(){
+
+    glPushMatrix();
+
+
+
+            glBindTexture(GL_TEXTURE_2D, 12);
+            init_texturing_parameters();
+            glTranslated(-2.40,2.20+1.40,-3.20);
+            rotated(5*0,5*7.80,0);
+            glScaled(10,10,1);
+            textured_surface(1, 1, 1, 1);
+
+
+    //cube(-2.40,2.20,-3.20,0,-1*50,0,.4,6.10,4.80);
+
+    glPopMatrix();
+}
 void wall()
 {
 
 
-    glPushMatrix();
-    glBindTexture(GL_TEXTURE_2D,6);
-	glEnable(GL_TEXTURE_2D);
-    cube(.80+1,3.10+0,2+0,0*20,2*20,0*20,.4-.60,+6.10-4.20,4.80-3.60);
-    glDisable(GL_TEXTURE_2D);
-    glPopMatrix();
 
     glPushMatrix();
-    glBindTexture(GL_TEXTURE_2D,10);
-	glEnable(GL_TEXTURE_2D);
-    cube(-2.40,2.20,-3.20,0,-1*50,0,.4,6.10,4.80);
-    glDisable(GL_TEXTURE_2D);
-    glPopMatrix();
-
-    glBindTexture(GL_TEXTURE_2D,9);
-	glEnable(GL_TEXTURE_2D);
 
     glPushMatrix();
-    const GLfloat mat_ambient[]    = { 0.5f, 0.5f, 0.0f, 1.0f };
+    const GLfloat mat_ambient[]    = { 1.f, 0.0f, 0.0f, 1.0f };
     const GLfloat mat_diffuse[]    = { 0.078f, 0.062f, 0.717f, 1.0f };
     const GLfloat mat_specular[]   = { 0.0f, 0.0f, 1.0f, 1.0f };
     const GLfloat high_shininess[] = { 100.0f };
@@ -263,16 +303,12 @@ void wall()
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
-
-
-
-
-
+    ///4 wall with window
     cube(0,0,0,0,-1*50,0,.4,6.10-3.50,4.80);
     cube(0,0,0,0,-1*50,0,.4,6.10,4.80-3.00);
     cube(0,5,0,0,-1*50,0,.4,6.10-5,4.80+0);
     cube(0-2.20,0+0,0+1.80,0,-1*50,0,.4,6.10,4.80-2.80);
-
+    glPopMatrix();
 
     const GLfloat mat_ambient2[]    = { 1.0f, 0.0f, 0.0f, 1.0f };
     const GLfloat mat_diffuse2[]    = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -284,7 +320,7 @@ void wall()
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular2);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess2);
 
-    cube(0,0,0,0*20,2*20,0*20,.4,+6.10,4.80);
+    cube(0,0,0,0*20,2*20,0*20,.4,+6.10,4.80);///2nd wall
 
 
     const GLfloat mat_ambient3[]    = { 1.0f, 1.0f, 0.0f, 1.0f };
@@ -296,10 +332,11 @@ void wall()
     glMaterialfv(GL_FRONT, GL_DIFFUSE,   mat_diffuse3);
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular3);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess3);
-    cube(0,0,0,0*20,-2.50*20,-4.50*20,.4+.1,6.10-1.30,4.80);
+    cube(0,0,0,0*20,-2.50*20,-4.50*20,.4+.1,6.10-1.30,4.80);///ground wall(3rd wall)
+
     glPopMatrix();
 
-    glDisable(GL_TEXTURE_2D);
+
 
 
 
@@ -311,8 +348,7 @@ void wall()
 
 void table()
 {
-    glBindTexture(GL_TEXTURE_2D,8);
-	glEnable(GL_TEXTURE_2D);
+
     glPushMatrix();
 
      const GLfloat mat_ambient[]    = { 0.545, 0.349, 0.054, 1.0f };
@@ -347,7 +383,6 @@ void table()
 
 
     glPopMatrix();
-    glDisable(GL_TEXTURE_2D);
 
 
 }
@@ -434,8 +469,7 @@ void windmill()
 void jack(){
     //First leg of jack
 
-    glBindTexture(GL_TEXTURE_2D,4);
-	glEnable(GL_TEXTURE_2D);
+
 glPushMatrix();
     glPushMatrix();
         glTranslated(3,10,13.0);
@@ -513,53 +547,161 @@ glPushMatrix();
 
         glPopMatrix();
         glPopMatrix();
-        glDisable(GL_TEXTURE_2D);
+
 
 }
+void second_viewport(){
 
-void rotated(int am,int bm,int cm){
-    glRotated(am,1,0,0);
-    glRotated(bm,0,1,0);
-    glRotated(cm,0,0,1);
-}
-static void display(void)
-{
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity() ;
     LookAtView();
     rotated(-15,0,0);
     glPushMatrix();
     glRotated(.80*20,1,0,0);
     glTranslated(-.70,-1.20,0);
-    glPushMatrix();
+
+    glPushMatrix();///table
+    //glBindTexture(GL_TEXTURE_2D,8);
+	//glEnable(GL_TEXTURE_2D);
     glTranslated(-.60,-.20,3.20);
     table();
-    glPopMatrix();
-    glPushMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glPopMatrix();///table
+
+    glPushMatrix();///wall photo
+    //glBindTexture(GL_TEXTURE_2D,6);
+	//glEnable(GL_TEXTURE_2D);
+    wall_photo();
+    //glDisable(GL_TEXTURE_2D);
+    glPopMatrix();///wall photo
+
+    glPushMatrix();///outside scene
+    //glBindTexture(GL_TEXTURE_2D,10);
+	//glEnable(GL_TEXTURE_2D);
+    outside_scene();
+    //glDisable(GL_TEXTURE_2D);
+    glPopMatrix();///outside scene
+
+    glPushMatrix();///wall
+    //glBindTexture(GL_TEXTURE_2D,9);
+	//glEnable(GL_TEXTURE_2D);
     wall();
-    glPopMatrix();
+    //glDisable(GL_TEXTURE_2D);
+    glPopMatrix();///wall
 
     glPopMatrix();
 
-    glPushMatrix();
+    glPushMatrix();///windmill
     rotated(10,10,0);
     glTranslated(0-.50, 0+.80,4+.30);
     glScaled(-.90+1,-.90+1,-.90+1);
     windmill();
-    glPopMatrix();
+    glPopMatrix();///windmill
 
-    glPushMatrix();
+    glPushMatrix();///jack
+    //glBindTexture(GL_TEXTURE_2D,4);
+	//glEnable(GL_TEXTURE_2D);
     rotated(3+6,-3+0,3+0);
     glScaled(.10,.10,.10-.05);
     glTranslated(-12.50+0,8+6,79+0);
     jack();
+    //glDisable(GL_TEXTURE_2D);
+    glPopMatrix();///jack
+
+
 
     glPopMatrix();
 
+
+
+
+}
+void first_viewport(){
+
+
+    LookAtView();
+    rotated(-15,0,0);
     glPushMatrix();
-    //cube(-3,3,4.20,0,0,0,-1.50+1,0+1,zz+1); //my test
+    glRotated(.80*20,1,0,0);
+    glTranslated(-.70,-1.20,0);
+
+    glPushMatrix();///table
+    glBindTexture(GL_TEXTURE_2D,8);
+	glEnable(GL_TEXTURE_2D);
+    glTranslated(-.60,-.20,3.20);
+    table();
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();///table
+
+    glPushMatrix();///wall photo
+    glBindTexture(GL_TEXTURE_2D,6);
+	glEnable(GL_TEXTURE_2D);
+    wall_photo();
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();///wall photo
+
+    glPushMatrix();///outside scene
+    //glBindTexture(GL_TEXTURE_2D,10);
+	//glEnable(GL_TEXTURE_2D);
+    outside_scene();
+    //glDisable(GL_TEXTURE_2D);
+    glPopMatrix();///outside scene
+
+    glPushMatrix();///wall
+    glBindTexture(GL_TEXTURE_2D,9);
+	glEnable(GL_TEXTURE_2D);
+    wall();
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();///wall
+
     glPopMatrix();
+
+    glPushMatrix();///windmill
+    rotated(10,10,0);
+    glTranslated(0-.50, 0+.80,4+.30);
+    glScaled(-.90+1,-.90+1,-.90+1);
+    windmill();
+    glPopMatrix();///windmill
+
+    glPushMatrix();///jack
+    glBindTexture(GL_TEXTURE_2D,4);
+	glEnable(GL_TEXTURE_2D);
+    rotated(3+6,-3+0,3+0);
+    glScaled(.10,.10,.10-.05);
+    glTranslated(-12.50+0,8+6,79+0);
+    jack();
+    glDisable(GL_TEXTURE_2D);
+    glPopMatrix();///jack
+
+
+
+    glPopMatrix();
+
+
+
+}
+
+static void display(void)
+{
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity() ;
+    ///1st viewport start
+    glPushMatrix();
+    glViewport(0,0,w/2,h/2);
+    first_viewport();
+    glPopMatrix();
+    ///1st viewport end
+
+    ///2nd viewport start
+    glPushMatrix();
+    glViewport(w/2,0,w/2,h/2);
+    second_viewport();
+    glPopMatrix();
+    /// 2nd viewport end
+
+
+
+
+
 
 
     glutSwapBuffers();
@@ -952,32 +1094,36 @@ void Init()
     pix[0].makeCheckImage();
 	pix[0].setTexture(1);
 
-	pix[1].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\teapot.bmp");
+	pix[1].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\teapot.bmp");
 	pix[1].setTexture(2);
 
-	pix[2].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\jack.bmp");
+	pix[2].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\jack.bmp");
 	pix[2].setTexture(3);
 
-	pix[3].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\table.bmp");
+	pix[3].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\table.bmp");
 	pix[3].setTexture(4);
 
-    pix[4].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\cone.bmp");
+    pix[4].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\cone.bmp");
 	pix[4].setTexture(5);
 
-	pix[5].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\image\\img.bmp");
+	pix[5].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\image\\img.bmp");
 	pix[5].setTexture(6);
 
-	pix[6].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\image\\img7.bmp");
+	pix[6].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\image\\img7.bmp");
 	pix[6].setTexture(7);
 
-	pix[7].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\image\\img6.bmp");
+	pix[7].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\image\\img6.bmp");
 	pix[7].setTexture(8);
 
-	pix[8].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\image\\img5.bmp");
+	pix[8].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\image\\img5.bmp");
 	pix[8].setTexture(9);
 
-	pix[9].readBMPFile("C:\\Users\\Inception\\Desktop\\New folder\\lab4 texturing\\image\\Polaris.bmp");
+	pix[9].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\image\\Polaris.bmp");
 	pix[9].setTexture(10);
+	pix[10].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\image\\sunset.bmp");
+	pix[10].setTexture(11);
+	pix[11].readBMPFile("C:\\Users\\Inception\\Desktop\\Graphics lab\\lab4 texturing\\image\\Grass01.bmp");
+	pix[11].setTexture(12);
 
 
 }
@@ -1001,8 +1147,7 @@ int main(int argc, char *argv[])
 
     glutReshapeFunc(resize);
     glutDisplayFunc(display);
-    printf("Enter 1 for camera and 0 for object mode\n");
-    scanf("%d",&flag);
+    printf("N.B. First time keys do not work,you have to press main window then press windmill window,then keys will be working\nEnter 1 for camera and 0 for object mode\nkey details:\nfor light control:\np=light on,P=light off\nyaw  : yY\npitch: uU\nroll :sS\nzoom in /out: tT");
 
 
     glutKeyboardFunc(key);

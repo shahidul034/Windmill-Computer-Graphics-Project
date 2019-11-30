@@ -78,7 +78,7 @@ void RGBpixmap::makeCheckerBoard()
 void RGBpixmap::setTexture(GLuint textureName)
 {
 	glBindTexture(GL_TEXTURE_2D,textureName);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	//This function sets several texture mapping parameters.
 	//These parameters are bound to the current texture state
 	//that can be made current with glBindTexture.

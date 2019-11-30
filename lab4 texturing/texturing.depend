@@ -338,3 +338,18 @@
 	<iostream>
 	<GL/glut.h>
 
+1575119566 source:c:\users\inception\desktop\graphics lab\lab4 texturing\main.cpp
+	<stdio.h>
+	<math.h>
+	<windows.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<math.h>
+	"RGBpixmap.cpp"
+
+1574746955 c:\users\inception\desktop\graphics lab\lab4 texturing\rgbpixmap.cpp
+	<fstream>
+	<iostream>
+	<GL/glut.h>
+
